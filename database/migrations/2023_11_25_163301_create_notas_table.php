@@ -10,15 +10,14 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('notas', function (Blueprint $table) {
             $table->id();
-            $table->string('nama', 50)->nullable();
-            $table->string('username', 25)->unique();
-            $table->string('password')->nullable();
-            $table->string('no_hp', 13)->nullable();
-            $table->string('level', 15)->nullable();
             $table->string('id_toko')->nullable();
-            $table->rememberToken();
+            $table->string('no_nota')->nullable()->unique();
+            $table->string('pembeli')->nullable();
+            $table->string('total_harga')->nullable();
+            $table->string('pembayaran')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('notas');
     }
 };

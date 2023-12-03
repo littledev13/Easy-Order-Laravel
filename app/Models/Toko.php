@@ -9,6 +9,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Toko extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'nama',
+        'pemilik',
+        'deskripsi',
+        'alamat',
+    ];
     // public function akuns(): HasMany
     // {
     //     return $this->hasMany(Akun::class, 'id_toko', 'nama');

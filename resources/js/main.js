@@ -7,8 +7,9 @@ import {
     initTE,
     Input,
     Ripple,
-    initTE,
     Chart,
     Toast,
+    Modal,
+    Select,
 } from "tw-elements";
-initTE({ Carousel, Input, Ripple, Chart, Toast });
+initTE({ Carousel, Input, Ripple, Chart, Toast, Modal, Select });

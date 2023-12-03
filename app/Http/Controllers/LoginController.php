@@ -28,17 +28,34 @@ class LoginController extends Controller
             'password' => ['required'],
         ]);
 
-
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/dashboard');
+            $user = Auth::user();
+            $redirectPath = $this->getRedirectPathByLevel($user->level);
+
+            return redirect()->intended($redirectPath);
         }
 
         return back()->with([
-            'loginError' =>
-                'error'
+            'loginError' => 'error'
         ])->onlyInput('username');
+    }
+    private function getRedirectPathByLevel(string $level)
+    {
+        switch ($level) {
+            case 'administrator':
+                return '/admin';
+            case 'manager':
+                return '/manager';
+            case 'kasir':
+                return '/kasir';
+            case 'koki':
+                return '/koki';
+            // Add more cases for other levels if needed
+            default:
+                return '/';
+        }
     }
     public function logout()
     {

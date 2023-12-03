@@ -6,6 +6,7 @@
     <title>@yield('title') | Easy Order</title>
     @vite('resources/js/tw-elements.umd.min.js')
     @vite('resources/css/app.css')
+    @vite('resources/css/all.css')
 </head>
 
 <body>

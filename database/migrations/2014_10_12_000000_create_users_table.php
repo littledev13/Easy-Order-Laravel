@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('nama', 50)->nullable();
             $table->string('username', 25)->unique();
-            $table->string('password')->nullable();
+            $table->string('password');
             $table->string('no_hp', 13)->nullable();
             $table->string('level', 15)->nullable();
             $table->string('id_toko')->nullable();

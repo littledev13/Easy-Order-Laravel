@@ -12,12 +12,12 @@ return new class extends Migration {
     {
         Schema::create('notas', function (Blueprint $table) {
             $table->id();
-            $table->string('id_toko')->nullable();
-            $table->string('no_nota')->nullable()->unique();
-            $table->string('pembeli')->nullable();
-            $table->string('total_harga')->nullable();
-            $table->string('pembayaran')->nullable();
-            $table->string('status')->nullable();
+            $table->string('id_toko');
+            $table->string('no_nota')->unique();
+            $table->string('pembeli');
+            $table->string('total_harga');
+            $table->string('pembayaran');
+            $table->string('status');
             $table->timestamps();
         });
     }

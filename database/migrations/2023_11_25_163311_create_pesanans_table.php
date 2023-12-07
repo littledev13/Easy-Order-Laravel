@@ -12,11 +12,11 @@ return new class extends Migration {
     {
         Schema::create('pesanans', function (Blueprint $table) {
             $table->id();
-            $table->string('id_toko')->nullable();
-            $table->string('no_nota')->nullable();
-            $table->string('menu')->nullable();
-            $table->string('quantity')->nullable();
-            $table->string('harga')->nullable();
+            $table->string('id_toko');
+            $table->string('no_nota');
+            $table->string('menu');
+            $table->string('quantity');
+            $table->string('harga');
             $table->timestamps();
         });
     }

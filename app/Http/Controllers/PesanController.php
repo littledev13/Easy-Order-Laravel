@@ -11,13 +11,13 @@ use Illuminate\Support\Facades\URL;
 class PesanController extends Controller
 {
     //
-    // public function index(Toko $id_toko)
-    // {
-    //     // $url = Toko::where('id' . '==' . $id_toko->id)->get();
-    //     return view('{id}.index', [
-    //         'toko' => $id_toko->nama
-    //     ]);
-    // }
+    public function index(Toko $id_toko)
+    {
+        // $url = Toko::where('id' . '==' . $id_toko->id)->get();
+        return view('{id}.index', [
+            'toko' => $id_toko->nama
+        ]);
+    }
     public function showMenu($id_toko, $kategori)
     {
         $menu = Menu::where([

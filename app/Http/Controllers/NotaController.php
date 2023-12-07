@@ -7,4 +7,6 @@ use Illuminate\Http\Request;
 class NotaController extends Controller
 {
     //
+
 }
+

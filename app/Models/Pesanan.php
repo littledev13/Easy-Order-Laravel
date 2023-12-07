@@ -13,4 +13,11 @@ class Pesanan extends Model
     // {
     //     return $this->hasOne(Pesanan::class, 'no_nota', 'no_nota');
     // }
+    protected $fillable = [
+        'id_toko',
+        'no_nota',
+        'harga',
+        'quantity',
+        'menu',
+    ];
 }

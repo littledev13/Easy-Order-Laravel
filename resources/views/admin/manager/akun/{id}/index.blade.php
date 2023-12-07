@@ -65,18 +65,27 @@
                     Hp<span class="text-red-600">*</span>
                 </label>
             </div>
-            <div class="relative mb-3" data-te-input-wrapper-init>
-                <select required name="level"
-                    class="appearance-none w-full py-2 px-4 border border-gray-300 rounded-md leading-tight focus:outline-none focus:border-blue-500">
-                    <option value="" selected disabled hidden>Choose Level </option>
-                    <option value="kasir">kasir</option>
-                    <option value="koki">koki</option>
-                </select>
-            </div>
+            @if ($user->level != 'manager')
+                <div class="relative mb-3" data-te-input-wrapper-init>
+                    <select required name="level"
+                        class="appearance-none w-full py-2 px-4 border border-gray-300 rounded-md leading-tight focus:outline-none focus:border-blue-500">
+                        <option value="" selected disabled hidden>Choose Level </option>
+                        <option value="kasir">kasir</option>
+                        <option value="koki">koki</option>
+                    </select>
+                </div>
+            @else
+                <div class="relative mb-3" data-te-input-wrapper-init>
+                    <select required name="level"
+                        class="appearance-none w-full py-2 px-4 border border-gray-300 rounded-md leading-tight focus:outline-none focus:border-blue-500 hidden">
+                        <option value="manager"selected>koki</option>
+                    </select>
+                </div>
+            @endif
 
             <div
                 class="flex flex-shrink-0 flex-wrap items-center justify-center gap-8 rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
-                <a href="/admin/akun"
+                <a href="{{ route('manager.akun') }}"
                     class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
                     data-te-modal-dismiss data-te-ripple-init data-te-ripple-color="light">
                     Back

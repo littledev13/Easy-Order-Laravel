@@ -7,6 +7,7 @@
     @vite('resources/js/tw-elements.umd.min.js')
     @vite('resources/css/app.css')
     @vite('resources/css/all.css')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -28,7 +29,7 @@
                         </li>
                         <li
                             class="hover:scale-110  text-black text-center px-2 py-1 hover: hover:bg-slate-200 rounded-md transition-all duration-150">
-                            <a href="/manager/laporan">laporan</a>
+                            <a href="{{ route('manager.laporan') }}">laporan</a>
                         </li>
                         <li>
                             <a href="/logout.php"

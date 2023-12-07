@@ -7,6 +7,7 @@
     @vite('resources/js/tw-elements.umd.min.js')
     @vite('resources/css/app.css')
     @vite('resources/css/all.css')
+
 </head>
 @php
     // Mendapatkan nilai angka dari URL
@@ -21,12 +22,12 @@
         </div>
         @yield('content')
         <div id="footer"
-            class="flex flex-row items-center justify-center gap-5 md:gap-8 fixed bottom-5 left-[50%] right-[50%]">
-            <a href="{{ route('menuPesanan', ['id_toko' => $angka, 'kategori' => 'food']) }}"
+            class="print:hidden flex flex-row items-center justify-center gap-5 md:gap-8 fixed bottom-5 left-[50%] right-[50%]">
+            <a href="{{ route('menuPesanan', ['id_toko' => $angka, 'kategori' => 'makanan']) }}"
                 class="food flex flex-col items-center h-full"><i
                     class="fa-solid fa-burger {{ $type == 'food' ? 'text-slate-300' : 'text-white' }} text-2xl"></i><span
                     class="text-gray-500 text-xl">food</span></a>
-            <a href="{{ route('menuPesanan', ['id_toko' => $angka, 'kategori' => 'drink']) }}"
+            <a href="{{ route('menuPesanan', ['id_toko' => $angka, 'kategori' => 'minuman']) }}"
                 class="drink flex flex-col items-center h-full"><i
                     class="fa-solid fa-champagne-glasses {{ $type == 'drink' ? 'text-slate-300' : 'text-white' }} text-2xl"></i><span
                     class="text-gray-500 text-xl">drink</span>

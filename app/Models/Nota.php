@@ -13,4 +13,12 @@ class Nota extends Model
     // {
     //     return $this->hasMany(Pesanan::class, 'no_nota', 'no_nota');
     // }
+    protected $fillable = [
+        'pembeli',
+        'id_toko',
+        'status',
+        'pembayaran',
+        'no_nota',
+        'total_harga',
+    ];
 }

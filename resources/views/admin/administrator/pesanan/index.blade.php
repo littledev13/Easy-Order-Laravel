@@ -7,6 +7,7 @@
 
 
 @section('content')
+    {{-- {{ dd($nota) }} --}}
     <div class="w-full flex flex-col justify-center items-center ">
         @if (session()->has('berhasil'))
             <div class="mb-3 inline-flex w-full items-center rounded-lg bg-success-100 px-6 py-5 text-base text-success-700"
@@ -18,7 +19,20 @@
                             clip-rule="evenodd" />
                     </svg>
                 </span>
-                Berhasil membuat Akun
+                {{ session('berhasil') }}
+            </div>
+        @endif
+        @if (session()->has('gagal'))
+            <div class="mb-3 inline-flex w-full items-center rounded-lg bg-danger-100 px-6 py-5 text-base text-danger-700"
+                role="alert">
+                <span class="mr-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+                        <path fill-rule="evenodd"
+                            d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </span>
+                {{ session('gagal') }}
             </div>
         @endif
         {{-- Todo Title --}}
@@ -115,11 +129,11 @@
                                     <select required name="id_toko"
                                         class="appearance-none w-full py-2 px-4 border border-gray-300 rounded-md leading-tight focus:outline-none focus:border-blue-500">
                                         <option value="" selected disabled hidden>Pilih Toko</option>
-                                        @forelse ($tokos as $index => $toko)
+                                        {{-- @forelse ($tokos as $index => $toko)
                                             <option value="{{ $toko->id }}">{{ $toko->nama }}</option>
                                         @empty
                                             <option>Belum ada toko</option>
-                                        @endforelse
+                                        @endforelse --}}
                                     </select>
                                 </div>
 
@@ -150,39 +164,43 @@
                 <div class="overflow-hidden w-[90vw] min-w-[620px] ">
                     <table class="min-w-full text-center text-sm font-light">
                         <colgroup>
-                            <col style="width: 5%;" /> <!-- No -->
-                            <col style="width: 20%;" /> <!-- Nama -->
-                            <col style="width: 15%;" /> <!-- Pemilik -->
-                            <col style="width: 25%;" /> <!-- Deskripsi -->
-                            <col style="width: 20%;" /> <!-- Alamat -->
-                            <col style="width: 15%;" /> <!-- Action -->
+                            <col style="width: 1%;" /> <!-- No -->
+                            <col style="width: 25%;" /> <!-- Nama -->
+                            <col style="width: 25%;" /> <!-- Pemilik -->
+                            <col style="width: 10%;" /> <!-- Pemilik -->
+                            <col style="width: 7.5%;" /> <!-- Deskripsi -->
+                            <col style="width: 7.5%;" /> <!-- Alamat -->
+                            <col style="width: 10%;" /> <!-- Action -->
+                            <col style="width: 20%;" /> <!-- Action -->
                         </colgroup>
                         <thead
                             class="border-b bg-cyan-400 font-medium text-white dark:border-neutral-500 dark:bg-neutral-900">
                             <tr>
                                 <th scope="col" class=" px-6 py-4 border">No</th>
-                                <th scope="col" class=" px-6 py-4 border">Nama</th>
-                                <th scope="col" class=" px-6 py-4 border">Username</th>
-                                <th scope="col" class=" px-6 py-4 border">No Hp</th>
-                                <th scope="col" class=" px-6 py-4 border">Level</th>
-                                <th scope="col" class=" px-6 py-4 border">Id Toko</th>
+                                <th scope="col" class=" px-6 py-4 border">Pembeli</th>
+                                <th scope="col" class=" px-6 py-4 border">No Nota</th>
+                                <th scope="col" class=" px-6 py-4 border">ID Toko</th>
+                                <th scope="col" class=" px-6 py-4 border">Pembayaran</th>
+                                <th scope="col" class=" px-6 py-4 border">Status</th>
+                                <th scope="col" class=" px-6 py-4 border">Tanggal</th>
                                 <th scope="col" class=" px-6 py-4 border">Action</th>
                             </tr>
                         </thead>
                         <tbody class="">
-                            @forelse ($akuns as $index => $akun)
+                            @forelse ($nota as $index => $item)
                                 {{-- {{ $akun }} --}}
                                 <tr class="{{ $index % 2 === 0 ? 'even:bg-white' : 'odd:bg-slate-50' }}">
                                     <td class="whitespace-nowrap px-6 py-4 border">{{ $index + 1 }}</td>
-                                    <td class="whitespace-nowrap px-6 py-4 border">{{ $akun->nama }}</td>
-                                    <td class="whitespace-nowrap px-6 py-4 border">{{ $akun->username }}</td>
-                                    <td class="whitespace-nowrap px-6 py-4 border">{{ $akun->no_hp }}</td>
-                                    <td class="whitespace-nowrap px-6 py-4 border">{{ $akun->level }}</td>
-                                    <td class="whitespace-nowrap px-6 py-4 border">{{ $akun->id_toko }}</td>
+                                    <td class="whitespace-nowrap px-6 py-4 border">{{ $item->pembeli }}</td>
+                                    <td class="whitespace-nowrap px-6 py-4 border">{{ $item->no_nota }}</td>
+                                    <td class="whitespace-nowrap px-6 py-4 border">{{ $item->id_toko }}</td>
+                                    <td class="whitespace-nowrap px-6 py-4 border">{{ $item->pembayaran }}</td>
+                                    <td class="whitespace-nowrap px-6 py-4 border">{{ $item->status }}</td>
+                                    <td class="whitespace-nowrap px-6 py-4 border">{{ $item->created_at }}</td>
                                     <td
                                         class="whitespace-nowrap px-6 py-4 border flex flex-row justify-center items-center gap-3">
-                                        <form action="{{ route('akun.destroy', $akun->id) }}" method="POST"
-                                            id="deleteForm-{{ $akun->id }}">
+                                        {{-- <form action="{{ route('pesanan.delete', $item->no_nota) }}" method="POST"
+                                            id="deleteForm-{{ $item->$index + 1 }}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="button" class="hover:text-[#FF0000] text-danger-500 text-xl"
@@ -192,13 +210,13 @@
                                             <script>
                                                 function confirmDelete() {
                                                     if (confirm('Apakah Anda yakin ingin menghapus?')) {
-                                                        document.getElementById('deleteForm-' + {{ $akun->id }}).submit();
+                                                        document.getElementById('deleteForm-' + {{ $item->$index + 1 }}).submit();
                                                     }
                                                 }
                                             </script>
-                                        </form>
+                                        </form> --}}
 
-                                        <a href="{{ route('akun.edit', $akun->id) }}"
+                                        <a href="{{ route('admin.details', $item->no_nota) }}"
                                             class="hover:text-[#0000FF] text-blue-500 text-xl -mt-3">
                                             <i class="fa-solid fa-pen"></i>
                                         </a>
@@ -207,7 +225,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="whitespace-nowrap px-6 py-4 border text-center">Data belum
+                                    <td colspan="8" class="whitespace-nowrap px-6 py-4 border text-center">Data belum
                                         ada.</td>
                                 </tr>
                             @endforelse

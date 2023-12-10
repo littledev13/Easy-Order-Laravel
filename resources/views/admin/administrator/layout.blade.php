@@ -32,11 +32,11 @@
                         </li>
                         <li
                             class="hover:scale-110  text-black text-center px-2 py-1 hover: hover:bg-slate-200 rounded-md transition-all duration-150">
-                            <a href="/admin/pesanan">pesanan</a>
+                            <a href="{{ route('pesanan') }}">pesanan</a>
                         </li>
                         <li
                             class="hover:scale-110  text-black text-center px-2 py-1 hover: hover:bg-slate-200 rounded-md transition-all duration-150">
-                            <a href="/admin/laporan">laporan</a>
+                            <a href="{{ route('admin.laporan') }}">laporan</a>
                         </li>
                         <li>
                             <a href="/logout.php"

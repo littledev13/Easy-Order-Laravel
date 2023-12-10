@@ -55,6 +55,13 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/admin/menu/{menu}', [MenuController::class, 'destroy'])->name('menu.destroy');
         Route::get('/admin/menu/{menu}/', [MenuController::class, 'edit'])->name('menu.edit');
         Route::put('/admin/menu/{menu}', [MenuController::class, 'update'])->name('menu.update');
+        Route::get('/admin/pesanan/', [AdminController::class, 'pesanan'])->name('pesanan');
+        Route::delete('/admin/pesanan/{no_nota}', [AdminController::class, 'deletePesanan'])->name('pesanan.delete');
+        Route::put('/admin/pesanan/{no_nota}', [AdminController::class, 'taked'])->name('pesanan.taked');
+        Route::post('/admin/pesanan/{no_nota}', [AdminController::class, 'updatePesanan'])->name('pesanan.update');
+        Route::get('/admin/pesanan/{no_nota}', [AdminController::class, 'detailsPesanan'])->name('admin.details');
+        Route::get('/admin/laporan/', [AdminController::class, 'laporan'])->name('admin.laporan');
+
     });
 
     // Manager Routes

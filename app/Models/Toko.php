@@ -15,6 +15,15 @@ class Toko extends Model
         'deskripsi',
         'alamat',
     ];
+    // public function notas()
+    // {
+    //     return $this->hasMany(Nota::class, 'id_toko');
+    // }
+
+    // public function pesanans()
+    // {
+    //     return $this->hasMany(Pesanan::class, 'id_toko');
+    // }
     // public function akuns(): HasMany
     // {
     //     return $this->hasMany(Akun::class, 'id_toko', 'nama');

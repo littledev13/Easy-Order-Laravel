@@ -20,4 +20,18 @@ class Pesanan extends Model
         'quantity',
         'menu',
     ];
+    // public function nota()
+    // {
+    //     return $this->belongsTo(Nota::class, 'no_nota');
+    // }
+
+    // public function menu()
+    // {
+    //     return $this->belongsTo(Menu::class, 'nama');
+    // }
+
+    // public function toko()
+    // {
+    //     return $this->belongsTo(Toko::class, 'id_toko');
+    // }
 }

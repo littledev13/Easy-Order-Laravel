@@ -21,4 +21,13 @@ class Nota extends Model
         'no_nota',
         'total_harga',
     ];
+    // public function pesanans()
+    // {
+    //     return $this->hasMany(Pesanan::class, 'no_nota');
+    // }
+
+    // public function toko()
+    // {
+    //     return $this->belongsTo(Toko::class, 'id_toko');
+    // }
 }

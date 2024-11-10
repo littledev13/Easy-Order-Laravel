@@ -19,12 +19,14 @@ class Nota extends Model
         'status',
         'pembayaran',
         'no_nota',
+        'no_meja',
+        'kembalian',
         'total_harga',
     ];
-    // public function pesanans()
-    // {
-    //     return $this->hasMany(Pesanan::class, 'no_nota');
-    // }
+    public function pesanans()
+    {
+        return $this->hasMany(Pesanan::class);
+    }
 
     // public function toko()
     // {

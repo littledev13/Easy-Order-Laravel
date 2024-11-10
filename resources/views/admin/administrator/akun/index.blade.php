@@ -45,13 +45,28 @@
         {{-- Todo Create --}}
         <!-- Button trigger modal -->
         <div class="w-full">
+            <div class="flex flex-row justify-between items-center ">
 
-            <button type="button"
-                class="mt-5 ml-7 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-                data-te-toggle="modal" data-te-target="#exampleModal" data-te-ripple-init data-te-ripple-color="light">
-                Create
-            </button>
-
+                <button type="button"
+                    class="ml-7 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                    data-te-toggle="modal" data-te-target="#exampleModal" data-te-ripple-init data-te-ripple-color="light">
+                    Create
+                </button>
+                <form action="" method="GET" class="float-right mt-4">
+                    <div class="relative mb-3 mr-5 ">
+                        <label for="inputSearch" class="sr-only">Search </label>
+                        <input id="inputSearch" name="search" type="search" placeholder="Search..."
+                            class="block w-64 rounded-lg border dark:border-none dark:bg-neutral-600 py-2 pl-10 pr-4 text-sm focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400" />
+                        <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="h-4 w-4 text-neutral-500 dark:text-neutral-200">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                            </svg>
+                        </span>
+                    </div>
+                </form>
+            </div>
             <!-- Modal -->
             <div data-te-modal-init
                 class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
@@ -164,7 +179,7 @@
             </div>
         </div>
         {{-- Todo Table --}}
-        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8 -mt-5">
             <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                 <div class="overflow-hidden w-[90vw] min-w-[620px] ">
                     <table class="min-w-full text-center text-sm font-light">
@@ -198,29 +213,32 @@
                                     <td class="whitespace-nowrap px-6 py-4 border">{{ $akun->no_hp }}</td>
                                     <td class="whitespace-nowrap px-6 py-4 border">{{ $akun->level }}</td>
                                     <td class="whitespace-nowrap px-6 py-4 border">{{ $akun->id_toko }}</td>
-                                    <td
-                                        class="whitespace-nowrap px-6 py-4 border flex flex-row justify-center items-center gap-3">
-                                        <form action="{{ route('akun.destroy', $akun->id) }}" method="POST"
-                                            id="deleteForm-{{ $akun->id }}">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="button" class="hover:text-[#FF0000] text-danger-500 text-xl"
-                                                onclick="confirmDelete({{ $akun->id }})">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </button>
-                                            <script>
-                                                function confirmDelete(id) {
-                                                    if (confirm('Apakah Anda yakin ingin menghapus?')) {
-                                                        document.getElementById('deleteForm-' + id).submit();
-                                                    }
-                                                }
-                                            </script>
-                                        </form>
+                                    <td class="whitespace-nowrap px-6 py-4 border ">
+                                        <div class="h-full flex flex-row gap-5 items-center justify-center">
 
-                                        <a href="{{ route('akun.edit', $akun->id) }}"
-                                            class="hover:text-[#0000FF] text-blue-500 text-xl -mt-3">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </a>
+                                            <form action="{{ route('akun.destroy', $akun->id) }}" method="POST"
+                                                id="deleteForm-{{ $akun->id }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button"
+                                                    class="hover:text-[#FF0000] text-danger-500 text-xl"
+                                                    onclick="confirmDelete({{ $akun->id }})">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                                <script>
+                                                    function confirmDelete(id) {
+                                                        if (confirm('Apakah Anda yakin ingin menghapus?')) {
+                                                            document.getElementById('deleteForm-' + id).submit();
+                                                        }
+                                                    }
+                                                </script>
+                                            </form>
+
+                                            <a href="{{ route('akun.edit', $akun->id) }}"
+                                                class="hover:text-[#0000FF] text-blue-500 text-xl -mt-3">
+                                                <i class="fa-solid fa-pen"></i>
+                                            </a>
+                                        </div>
 
                                     </td>
                                 </tr>
@@ -232,6 +250,49 @@
                             @endforelse
                         </tbody>
                     </table>
+                </div>
+                <div class="w-full flex flex-row justify-center items-center my-5">
+
+                    <nav aria-label="Page navigation example">
+                        <ul class="list-style-none flex">
+                            <!-- Tombol Previous -->
+                            @if ($akuns->onFirstPage())
+                                <li>
+                                    <a
+                                        class="pointer-events-none relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400">Previous</a>
+                                </li>
+                            @else
+                                <li>
+                                    <a href="{{ $akuns->previousPageUrl() }}"
+                                        class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-200 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">Previous</a>
+                                </li>
+                            @endif
+
+                            <!-- Tampilkan halaman-halaman -->
+                            {{-- @dd($akuns->totalPage()) --}}
+                            @for ($page = max(1, $akuns->currentPage() - 2); $page <= min($akuns->lastPage(), $akuns->currentPage() + 2); $page++)
+                                <li aria-current="{{ $page == $akuns->currentPage() ? 'page' : '' }}">
+                                    <a href="{{ $akuns->url($page) }}"
+                                        class="relative block rounded  px-3 py-1.5 text-sm font-medium text-neutral-600 transition-all duration-300 hover:bg-neutral-200 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white {{ $page == $akuns->currentPage() ? 'bg-neutral-400 pointer-events-none' : '' }}">
+                                        {{ $page }}
+                                    </a>
+                                </li>
+                            @endfor
+
+                            <!-- Tombol Next -->
+                            @if ($akuns->hasMorePages())
+                                <li>
+                                    <a href="{{ $akuns->nextPageUrl() }}"
+                                        class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-200 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">Next</a>
+                                </li>
+                            @else
+                                <li>
+                                    <a
+                                        class="pointer-events-none relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400">Next</a>
+                                </li>
+                            @endif
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>

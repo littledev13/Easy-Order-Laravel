@@ -12,8 +12,13 @@ class Menu extends Model
         'image_url',
         'nama',
         'kategori',
+        'stock',
         'deskripsi',
         'harga',
         'id_toko',
     ];
+    public function nota()
+    {
+        return $this->belongsTo(Menu::class);
+    }
 }

@@ -13,11 +13,12 @@ return new class extends Migration {
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
             $table->string('id_toko');
-            $table->string('nama', 50)->nullable();
-            $table->string('kategori')->nullable();
-            $table->string('deskripsi', 150)->nullable();
+            $table->string('nama', 50);
+            $table->string('kategori');
+            $table->string('deskripsi', 150);
+            $table->string('stock');
             $table->string('image_url');
-            $table->string('harga')->nullable();
+            $table->string('harga');
             $table->timestamps();
         });
     }

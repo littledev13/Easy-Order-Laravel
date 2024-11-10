@@ -2,7 +2,7 @@
 
 @extends('admin.administrator.layout')
 
-@section('title', 'Manage Akun')
+@section('title', 'Manage Menu')
 
 
 
@@ -43,123 +43,259 @@
         <p class="w-full text-center border-b-2 border-slate-400 text-xl font-semibold text-neutral-800">Manage Menu</p>
         {{-- Todo Create --}}
         <!-- Button trigger modal -->
-        <div class="w-full">
+        <div class="w-full flex flex-row justify-between items-center ">
+            <div class="flex flex-row gap-5">
+                <div class="w-fit h-fit">
 
-            <button type="button"
-                class="mt-5 ml-7 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-                data-te-toggle="modal" data-te-target="#exampleModal" data-te-ripple-init data-te-ripple-color="light">
-                Create
-            </button>
+                    <button type="button"
+                        class=" ml-7 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                        data-te-toggle="modal" data-te-target="#exampleModal" data-te-ripple-init
+                        data-te-ripple-color="light">
+                        Create
+                    </button>
 
-            <!-- Modal -->
-            <div data-te-modal-init
-                class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
-                id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div data-te-modal-dialog-ref
-                    class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px]">
-                    <div
-                        class="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
-                        <div
-                            class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
-                            <!--Modal title-->
-                            <h5 class="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200"
-                                id="exampleModalLabel">
-                                Create Menu
-                            </h5>
-                            <!--Close button-->
-                            <button type="button"
-                                class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
-                                data-te-modal-dismiss aria-label="Close">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
-                        </div>
-
-                        <!--Modal body-->
-                        <form action="{{ route('menu.add') }}" method="post" class="flex flex-col gap-1"
-                            enctype="multipart/form-data">
-                            @csrf
-                            @method('POST')
-                            <div class="relative flex-auto p-4" data-te-modal-body-ref>
-                                <div class="relative mb-3" data-te-input-wrapper-init>
-                                    <input type="text"
-                                        class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                                        id="exampleFormControlInput2" placeholder="Form control lg" required autofocus
-                                        name="nama" />
-                                    <label for="exampleFormControlInput2"
-                                        class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.15rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">Nama
-                                    </label>
-                                </div>
-                                <div class="relative mb-3">
-                                    <select required name="kategori"
-                                        class="appearance-none w-full py-2 px-4 border border-gray-300 rounded-md leading-tight focus:outline-none focus:border-blue-500">
-                                        <option value="" selected disabled hidden>Pilih Kategori</option>
-                                        <option value="Makanan">Food</option>
-                                        <option value="Minuman">Drink</option>
-                                        <option value="Dessert">Dessert</option>
-                                    </select>
-                                </div>
-                                <div class="relative mb-3" data-te-input-wrapper-init>
-                                    <input type="text"
-                                        class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                                        id="exampleFormControlInput2" placeholder="Form control lg" required
-                                        name="deskripsi" />
-                                    <label for="exampleFormControlInput2"
-                                        class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.15rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">Deskripsi
-                                    </label>
-                                </div>
-                                <div class="relative mb-3" data-te-input-wrapper-init>
-                                    <input type="text"
-                                        class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                                        id="exampleFormControlInput2" placeholder="Form control lg" required
-                                        name="harga" />
-                                    <label for="exampleFormControlInput2"
-                                        class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.15rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">Harga
-                                    </label>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="formFileMultiple"
-                                        class="mb-2 inline-block text-neutral-700 dark:text-neutral-200">Gambar</label>
-                                    <input
-                                        class="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
-                                        type="file" id="formFileMultiple" multiple required
-                                        accept="image/png, image/gif, image/jpeg, image/jpg" name="image_url" />
-                                </div>
-                                <div class="relative mb-3">
-                                    {{-- <label data-te-select-label-ref>Toko</label> --}}
-                                    <select required name="id_toko"
-                                        class="appearance-none w-full py-2 px-4 border border-gray-300 rounded-md leading-tight focus:outline-none focus:border-blue-500">
-                                        <option value="" selected disabled hidden>Pilih Toko</option>
-                                        @forelse ($tokos as $index => $toko)
-                                            <option value="{{ $toko->id }}">{{ $toko->nama }}</option>
-                                        @empty
-                                            <option>Belum ada toko</option>
-                                        @endforelse
-                                    </select>
-                                </div>
-
-                            </div>
-
-                            <!--Modal footer-->
+                    <!-- Modal -->
+                    <div data-te-modal-init
+                        class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+                        id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div data-te-modal-dialog-ref
+                            class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px]">
                             <div
-                                class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
-                                <button type="button"
-                                    class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
-                                    data-te-modal-dismiss data-te-ripple-init data-te-ripple-color="light">
-                                    Close
-                                </button>
-                                <button type="submit"
-                                    class="ml-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-                                    data-te-ripple-init data-te-ripple-color="light">
-                                    Save changes
-                                </button>
+                                class="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
+                                <div
+                                    class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+                                    <!--Modal title-->
+                                    <h5 class="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200"
+                                        id="exampleModalLabel">
+                                        Create Menu
+                                    </h5>
+                                    <!--Close button-->
+                                    <button type="button"
+                                        class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+                                        data-te-modal-dismiss aria-label="Close">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <!--Modal body-->
+                                <form action="{{ route('menu.add') }}" method="post" class="flex flex-col gap-1"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    @method('POST')
+                                    <input type="text" value="menu" readonly class="hidden" name="tipe">
+                                    <div class="relative flex-auto p-4" data-te-modal-body-ref>
+                                        <div class="relative mb-3" data-te-input-wrapper-init>
+                                            <input type="text"
+                                                class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                                id="exampleFormControlInput2" placeholder="Form control lg" required
+                                                autofocus name="nama" />
+                                            <label for="exampleFormControlInput2"
+                                                class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.15rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">Nama
+                                            </label>
+                                        </div>
+                                        <div class="relative mb-3">
+                                            <select required name="kategori"
+                                                class="appearance-none w-full py-2 px-4 border border-gray-300 rounded-md leading-tight focus:outline-none focus:border-blue-500">
+                                                <option value="" selected disabled hidden>Pilih Kategori</option>
+                                                <option value="Makanan">Makanan</option>
+                                                <option value="Minuman">Minuman</option>
+                                                <option value="Dessert">Dessert</option>
+                                                @foreach ($kategori as $item)
+                                                    <option value="{{ $item->nama }}">{{ $item->nama }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="relative mb-3">
+                                            <select required name="stock"
+                                                class="appearance-none w-full py-2 px-4 border border-gray-300 rounded-md leading-tight focus:outline-none focus:border-blue-500 capitalize">
+                                                <option value="" selected disabled hidden>Stock</option>
+                                                <option value="tersedia">tersedia</option>
+                                                <option value="habis">habis</option>
+                                            </select>
+                                        </div>
+                                        <div class="relative mb-3" data-te-input-wrapper-init>
+                                            <input type="text"
+                                                class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                                id="exampleFormControlInput2" placeholder="Form control lg" required
+                                                name="deskripsi" />
+                                            <label for="exampleFormControlInput2"
+                                                class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.15rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">Deskripsi
+                                            </label>
+                                        </div>
+                                        <div class="relative mb-3" data-te-input-wrapper-init>
+                                            <input type="text"
+                                                class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                                id="exampleFormControlInput2" placeholder="Form control lg" required
+                                                name="harga" />
+                                            <label for="exampleFormControlInput2"
+                                                class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.15rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">Harga
+                                            </label>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="formFileMultiple"
+                                                class="mb-2 inline-block text-neutral-700 dark:text-neutral-200">Gambar</label>
+                                            <input
+                                                class="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
+                                                type="file" id="formFileMultiple" multiple required
+                                                accept="image/png, image/gif, image/jpeg, image/jpg" name="image_url" />
+                                        </div>
+                                        <div class="relative mb-3">
+                                            {{-- <label data-te-select-label-ref>Toko</label> --}}
+                                            <select required name="id_toko"
+                                                class="appearance-none w-full py-2 px-4 border border-gray-300 rounded-md leading-tight focus:outline-none focus:border-blue-500">
+                                                <option value="" selected disabled hidden>Pilih Toko</option>
+                                                @forelse ($tokos as $index => $toko)
+                                                    <option value="{{ $toko->id }}">{{ $toko->nama }}</option>
+                                                @empty
+                                                    <option>Belum ada toko</option>
+                                                @endforelse
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+                                    <!--Modal footer-->
+                                    <div
+                                        class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+                                        <button type="button"
+                                            class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
+                                            data-te-modal-dismiss data-te-ripple-init data-te-ripple-color="light">
+                                            Close
+                                        </button>
+                                        <button type="submit"
+                                            class="ml-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                                            data-te-ripple-init data-te-ripple-color="light">
+                                            Save changes
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
+                <div class="w-fit h-fit">
+
+                    <button type="button"
+                        class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                        data-te-toggle="modal" data-te-target="#exampleModal1" data-te-ripple-init
+                        data-te-ripple-color="light">
+                        Create Kategory
+                    </button>
+
+                    <!-- Modal -->
+                    <div data-te-modal-init
+                        class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+                        id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div data-te-modal-dialog-ref
+                            class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px]">
+                            <div
+                                class="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
+                                <div
+                                    class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+                                    <!--Modal title-->
+                                    <h5 class="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200"
+                                        id="exampleModalLabel">
+                                        Create Kategory
+                                    </h5>
+                                    <!--Close button-->
+                                    <button type="button"
+                                        class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+                                        data-te-modal-dismiss aria-label="Close">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <!--Modal body-->
+                                <form action="{{ route('menu.add') }}" method="post" class="flex flex-col gap-1"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    @method('POST')
+                                    {{-- Kategori --}}
+                                    <div class="relative flex-auto p-4" data-te-modal-body-ref>
+                                        <div class="relative mb-3" data-te-input-wrapper-init>
+                                            <input type="text" value="kategori" readonly class="hidden"
+                                                name="tipe">
+                                            <input type="text"
+                                                class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                                id="exampleFormControlInput2" placeholder="Form control lg" required
+                                                autofocus name="nama" />
+                                            <label for="exampleFormControlInput2"
+                                                class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.15rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">Nama<span
+                                                    class="text-danger-600">*</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="formFileMultiple"
+                                                class="mb-2 inline-block text-neutral-700 dark:text-neutral-200">Gambar</label>
+                                            <input
+                                                class="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
+                                                type="file" id="formFileMultiple" multiple
+                                                accept="image/png, image/gif, image/jpeg, image/jpg" name="image_url" />
+                                            <div class="text-slate-400 text-sm italic flex flex-col">
+                                                <p class="">*Tidak akan ditampilkan di halaman depan
+                                                    jika kosong</p>
+                                                <p class="">*200x200 / 300x300</p>
+                                                <p class="">*max 2mb</p>
+                                            </div>
+                                        </div>
+                                        <div class="relative mb-3">
+                                            {{-- <label data-te-select-label-ref>Toko</label> --}}
+                                            <select required name="id_toko"
+                                                class="appearance-none w-full py-2 px-4 border border-gray-300 rounded-md leading-tight focus:outline-none focus:border-blue-500">
+                                                <option value="" selected disabled hidden>Pilih Toko</option>
+                                                @forelse ($tokos as $index => $toko)
+                                                    <option value="{{ $toko->id }}">{{ $toko->nama }}</option>
+                                                @empty
+                                                    <option>Belum ada toko</option>
+                                                @endforelse
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+                                    <!--Modal footer-->
+                                    <div
+                                        class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+                                        <button type="button"
+                                            class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
+                                            data-te-modal-dismiss data-te-ripple-init data-te-ripple-color="light">
+                                            Close
+                                        </button>
+                                        <button type="submit"
+                                            class="ml-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                                            data-te-ripple-init data-te-ripple-color="light">
+                                            Save changes
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+            <form action="" method="GET" class="mt-3">
+                <div class="relative">
+                    <label for="inputSearch" class="sr-only">Search </label>
+                    <input id="inputSearch" name="search" type="search" placeholder="Search..."
+                        class="block w-64 rounded-lg border-2 dark:border-none dark:bg-neutral-600 py-2 pl-10 pr-4 text-sm focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400" />
+                    <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="h-4 w-4 text-neutral-500 dark:text-neutral-200">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                        </svg>
+                    </span>
+                </div>
+            </form>
         </div>
         {{-- Todo Table --}}
         <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -167,14 +303,14 @@
                 <div class="overflow-hidden w-[90vw] min-w-[620px] ">
                     <table class="min-w-full text-center text-sm font-light">
                         <colgroup>
-                            <col style="width: 4.5%;" /> <!-- No -->
-                            <col style="width: 20%;" /> <!-- Nama -->
+                            <col style="width: 1%;" /> <!-- No -->
+                            {{-- <col style="width: 20%;" /> <!-- Nama -->
                             <col style="width: 10%;" /> <!-- No -->
                             <col style="width: 25%;" /> <!-- Nama -->
                             <col style="width: 15%;" /> <!-- Pemilik -->
                             <col style="width: 10.5%;" /> <!-- Deskripsi -->
                             <col style="width: 10%;" /> <!-- Alamat -->
-                            <col style="width: 10%;" /> <!-- Action -->
+                            <col style="width: 10%;" /> <!-- Action --> --}}
                         </colgroup>
                         <thead
                             class="border-b bg-cyan-400 font-medium text-white dark:border-neutral-500 dark:bg-neutral-900">
@@ -182,7 +318,8 @@
                                 <th scope="col" class=" px-6 py-4 border">No</th>
                                 <th scope="col" class=" px-6 py-4 border">Nama</th>
                                 <th scope="col" class=" px-6 py-4 border">Kategori</th>
-                                <th scope="col" class=" px-6 py-4 border">Deskriosi</th>
+                                <th scope="col" class=" px-6 py-4 border">stock</th>
+                                <th scope="col" class=" px-6 py-4 border">Deskripsi</th>
                                 <th scope="col" class=" px-6 py-4 border">Harga</th>
                                 <th scope="col" class=" px-6 py-4 border">Gambar</th>
                                 <th scope="col" class=" px-6 py-4 border">ID Toko</th>
@@ -192,36 +329,40 @@
                         <tbody class="">
                             @forelse ($menus as $index => $menu)
                                 {{-- {{ $menu }} --}}
-                                <tr class="{{ $index % 2 === 0 ? 'even:bg-white' : 'odd:bg-slate-50' }}">
+                                <tr class="{{ $index % 2 === 0 ? 'even:bg-white' : 'odd:bg-slate-50' }} capitalize">
                                     <td class="whitespace-nowrap px-6 py-4 border">{{ $index + 1 }}</td>
                                     <td class="whitespace-nowrap px-6 py-4 border">{{ $menu->nama }}</td>
                                     <td class="whitespace-nowrap px-6 py-4 border">{{ $menu->kategori }}</td>
-                                    <td class="whitespace-nowrap px-6 py-4 border">{{ $menu->deskripsi }}</td>
-                                    <td class="whitespace-nowrap px-6 py-4 border">{{ $menu->harga }}</td>
+                                    <td class="whitespace-nowrap px-6 py-4 border">{{ $menu->stock }}</td>
+                                    <td class="whitespace-normal break-words px-6 py-4 border">{{ $menu->deskripsi }}</td>
+                                    <td class="whitespace-nowrap px-6 py-4 border">
+                                        Rp {{ number_format($menu->harga, 0, ',', '.') }}</td>
                                     <td class="whitespace-nowrap px-6 py-4 border">
                                         <img alt="image"
                                             class="block h-full min-w-[75px] max-w-[115px] rounded object-cover object-center"
                                             src="/img/menu/{{ $menu->image_url }}" />
                                     </td>
                                     <td class="whitespace-nowrap px-6 py-4 border">{{ $menu->id_toko }}</td>
-                                    <td
-                                        class="whitespace-nowrap  px-6 py-4 border flex flex-row justify-center items-center gap-3">
-                                        <form action="{{ route('menu.destroy', $menu->id) }}" method="POST"
-                                            id="deleteForm-{{ $menu->id }}">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="button" class="hover:text-[#FF0000] text-danger-500 text-xl"
-                                                onclick="confirmDelete({{ $menu->id }})">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </button>
+                                    <td class="whitespace-nowrap  px-6 py-4 border ">
+                                        <div class="h-full flex flex-row gap-5">
 
-                                        </form>
+                                            <form action="{{ route('menu.destroy', $menu->id) }}" method="POST"
+                                                id="deleteForm-{{ $menu->id }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button"
+                                                    class="hover:text-[#FF0000] text-danger-500 text-xl"
+                                                    onclick="confirmDelete({{ $menu->id }})">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
 
-                                        <a href="{{ route('menu.edit', $menu->id) }}"
-                                            class="hover:text-[#0000FF] text-blue-500 text-xl -mt-3">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </a>
+                                            </form>
 
+                                            <a href="{{ route('menu.edit', $menu->id) }}"
+                                                class="hover:text-[#0000FF] text-blue-500 text-xl">
+                                                <i class="fa-solid fa-pen"></i>
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                             @empty
@@ -232,6 +373,49 @@
                             @endforelse
                         </tbody>
                     </table>
+                    <div class="w-full flex flex-row justify-center items-center my-5">
+
+                        <nav aria-label="Page navigation example">
+                            <ul class="list-style-none flex">
+                                <!-- Tombol Previous -->
+                                @if ($menus->onFirstPage())
+                                    <li>
+                                        <a
+                                            class="pointer-events-none relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400">Previous</a>
+                                    </li>
+                                @else
+                                    <li>
+                                        <a href="{{ $menus->previousPageUrl() }}"
+                                            class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-200 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">Previous</a>
+                                    </li>
+                                @endif
+
+                                <!-- Tampilkan halaman-halaman -->
+                                {{-- @dd($menus->totalPage()) --}}
+                                @for ($page = max(1, $menus->currentPage() - 2); $page <= min($menus->lastPage(), $menus->currentPage() + 2); $page++)
+                                    <li aria-current="{{ $page == $menus->currentPage() ? 'page' : '' }}">
+                                        <a href="{{ $menus->url($page) }}"
+                                            class="relative block rounded  px-3 py-1.5 text-sm font-medium text-neutral-600 transition-all duration-300 hover:bg-neutral-200 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white {{ $page == $menus->currentPage() ? 'bg-neutral-400 pointer-events-none' : '' }}">
+                                            {{ $page }}
+                                        </a>
+                                    </li>
+                                @endfor
+
+                                <!-- Tombol Next -->
+                                @if ($menus->hasMorePages())
+                                    <li>
+                                        <a href="{{ $menus->nextPageUrl() }}"
+                                            class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-200 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">Next</a>
+                                    </li>
+                                @else
+                                    <li>
+                                        <a
+                                            class="pointer-events-none relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400">Next</a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
             </div>
         </div>

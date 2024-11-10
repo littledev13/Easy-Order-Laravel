@@ -49,4 +49,8 @@ class User extends Authenticatable
     {
         return $this->level === $role;
     }
+    public function toko()
+    {
+        return $this->belongsTo(Toko::class, 'id');
+    }
 }

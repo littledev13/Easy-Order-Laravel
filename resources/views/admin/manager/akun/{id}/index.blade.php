@@ -1,7 +1,7 @@
-@extends('admin.administrator.layout')
+@extends('admin.manager.layout')
 
 @section('title', 'Manage akun')
-
+@section('id', $level->id)
 @section('content')
     <p class="text-center font-semibold text-2xl text-neutral-900 mt-10 mb-5">Edit akun</p>
     @if ($errors->any())

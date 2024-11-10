@@ -15,8 +15,10 @@ return new class extends Migration {
             $table->string('id_toko');
             $table->string('no_nota')->unique();
             $table->string('pembeli');
+            $table->string('no_meja');
             $table->string('total_harga');
-            $table->string('pembayaran');
+            $table->string('pembayaran')->default('');
+            $table->string('kembalian')->default('');
             $table->string('status');
             $table->timestamps();
         });

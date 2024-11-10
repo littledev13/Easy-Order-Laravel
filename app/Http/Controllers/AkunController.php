@@ -10,11 +10,25 @@ use Illuminate\Http\Request;
 class AkunController extends Controller
 {
     //
-    public function showAkun()
+    public function showAkun(Request $request)
     {
         // $tokos = Toko::all();
-        $Users = User::where('id', '>', 1)->get();
+        // $Users = User::where('id', '>', 1)->paginate(15);
         $tokos = Toko::where('id', '>', 1)->get();
+        if ($request->has('search')) {
+            $searchTerm = $request->search;
+            $Users = User::where('id', '>', 1)
+                ->where(function ($query) use ($searchTerm) {
+                    $query->where('nama', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhere('username', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhere('no_hp', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhere('id_toko', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhere('level', 'LIKE', '%' . $searchTerm . '%');
+                })
+                ->paginate(15);
+        } else {
+            $Users = User::where('id', '>', 1)->paginate(15);
+        }
         return view('admin.administrator.akun.index', [
             'akuns' => $Users,
             'tokos' => $tokos,

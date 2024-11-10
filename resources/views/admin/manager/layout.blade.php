@@ -9,11 +9,16 @@
     @vite('resources/css/all.css')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+@php
+    use Illuminate\Support\Facades\Auth;
+
+    $id = Auth::user()->id_toko;
+@endphp
 
 <body>
     <div class="container mx-auto">
         @section('header')
-            <nav class="w-full sticky top-0 left-0 flex flex-row justify-between items-center">
+            <nav class="w-full top-0 left-0 flex flex-row justify-between items-center">
                 <h2 class="text-3xl text-[#101024] px-3">
                     Easy<sub>order</sub>
                 </h2>
@@ -31,12 +36,18 @@
                             class="hover:scale-110  text-black text-center px-2 py-1 hover: hover:bg-slate-200 rounded-md transition-all duration-150">
                             <a href="{{ route('manager.laporan') }}">laporan</a>
                         </li>
-                        <li>
+                        <li class="flex flex-row justify-center items-center gap-2">
+                            <a href="/{{ $id }}"
+                                class="w-fit h-fit rounded px-2 py-1 flex flex-row gap-1 items-center hover:cursor-pointer shadow-md bg-success-400 hover:bg-success-500 text-white ">
+                                <i class="fa-solid fa-shop"></i>
+
+                                <p class="text-xs">Toko</p>
+                            </a>
                             <a href="/logout.php"
-                                class="w-fit h-fit rounded px-2 py-1 flex flex-row gap-1 items-center hover:cursor-pointer shadow-md bg-red-400 hover:bg-red-500 text-white scale-[.80]">
+                                class="w-fit h-fit rounded px-2 py-1 flex flex-row gap-1 items-center hover:cursor-pointer shadow-md bg-red-400 hover:bg-red-500 text-white ">
                                 <i class="fa-solid fa-right-from-bracket"></i>
 
-                                <p>Logout</p>
+                                <p class="text-xs">Logout</p>
                             </a>
                         </li>
                     </ul>

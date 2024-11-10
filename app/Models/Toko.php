@@ -15,23 +15,23 @@ class Toko extends Model
         'deskripsi',
         'alamat',
     ];
-    // public function notas()
-    // {
-    //     return $this->hasMany(Nota::class, 'id_toko');
-    // }
+    public function notas()
+    {
+        return $this->hasMany(Nota::class, 'id_toko');
+    }
 
     // public function pesanans()
     // {
     //     return $this->hasMany(Pesanan::class, 'id_toko');
     // }
-    // public function akuns(): HasMany
-    // {
-    //     return $this->hasMany(Akun::class, 'id_toko', 'nama');
-    // }
-    // public function menus(): HasMany
-    // {
-    //     return $this->hasMany(Menu::class, 'id_toko', 'nama');
-    // }
+    public function akuns()
+    {
+        return $this->hasMany(User::class, 'id');
+    }
+    public function menus()
+    {
+        return $this->hasMany(Menu::class, 'id_toko');
+    }
     // public function notas(): HasMany
     // {
     //     return $this->hasMany(Nota::class, 'id_toko', 'nama');

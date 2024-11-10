@@ -6,7 +6,9 @@ use App\Events\NewCookNotification;
 use App\Events\NewOrderNotification;
 use App\Models\Nota;
 use App\Models\Pesanan;
+use App\Models\Toko;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -20,13 +22,30 @@ class kasirController extends Controller
 
         return view('admin.kasir.index');
     }
-    function pesanan()
+    function pesanan(Request $request)
     {
 
-        $data = Nota::where('id_toko', Auth::user()->id_toko)
-            ->whereNotIn('status', ['taked', 'cancel'])
-            ->get();
-
+        // $data = Nota::where('id_toko', Auth::user()->id_toko)
+        //     ->whereNotIn('status', ['taked', 'cancel'])
+        //     ->paginate(15);
+        if ($request->has('search')) {
+            $searchTerm = $request->search;
+            $data = Nota::where('id_toko', Auth::user()->id_toko)
+                ->whereNotIn('status', ['taked', 'cancel'])
+                ->where(function ($query) use ($searchTerm) {
+                    $query->where('pembeli', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhere('no_nota', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhere('status', 'LIKE', '%' . $searchTerm . '%');
+                })
+                ->paginate(15);
+        } elseif ($request->has('date')) {
+            $dateFilter = $request->date;
+            $data = Nota::where('id_toko', Auth::user()->id_toko)
+                ->whereDate('created_at', $dateFilter)->whereNotIn('status', ['taked', 'cancel'])->paginate(15);
+        } else {
+            $data = Nota::where('id_toko', Auth::user()->id_toko)
+                ->whereNotIn('status', ['taked', 'cancel'])->paginate(15);
+        }
         return view('admin.kasir.pesanan.index', [
             'data' => $data
         ]);
@@ -36,6 +55,7 @@ class kasirController extends Controller
         $nota = Nota::where('no_nota', '=', $no_nota)->get();
         $pesanan = Pesanan::where('no_nota', '=', $no_nota)->get();
 
+        // dd($nota);
         return view('admin.kasir.pesanan.{id}.index', [
             'nota' => $nota,
             'pesanan' => $pesanan
@@ -46,8 +66,12 @@ class kasirController extends Controller
         // dd($request->input("quantity1"));
         DB::beginTransaction();
         $index = 1;
-        $totalHarga = 0;
-
+        $totalHarga = $this->calculateTotalPrice($request->all());
+        if ($totalHarga > $request->pembayaran) {
+            return redirect()->route('kasir.details', $no_nota)->withErrors(['gagal' => 'Uang Pembayaran kurang']);
+        }
+        // dd($totalHarga);
+        // dd($request->all());
         try {
             // Ambil data nota dengan nomor nota tertentu
             $nota = Nota::where('no_nota', $no_nota)->first();
@@ -64,12 +88,12 @@ class kasirController extends Controller
                         dd('hapus');
                         Pesanan::where('menu', $request->input("menu{$index}"))->delete();
                     }
-                    $totalHarga += (($request->input("quantity{$index}")) * ($request->input("harga{$index}")));
                     $index++;
                 }
                 Nota::where('no_nota', $no_nota)->update([
+                    'kembalian' => floatval($request->pembayaran) - $totalHarga,
                     'total_harga' => $totalHarga,
-                    'pembayaran' => 'paid',
+                    'pembayaran' => floatval($request->pembayaran),
                     'status' => 'dimasak'
                 ]);
 
@@ -153,12 +177,31 @@ class kasirController extends Controller
     }
     // History
 
-    function history()
+    function history(Request $request)
     {
 
-        $data = Nota::where('id_toko', Auth::user()->id_toko)
-            ->whereIn('status', ['taked', 'cancel'])
-            ->get();
+        // $data = Nota::where('id_toko', Auth::user()->id_toko)
+        //     ->whereIn('status', ['taked', 'cancel'])
+        //     ->paginate(15);
+        if ($request->has('search')) {
+            $searchTerm = $request->search;
+            $data = Nota::where('id_toko', Auth::user()->id_toko)
+                ->whereNotIn('status', ['taked', 'cancel'])
+                ->where(function ($query) use ($searchTerm) {
+                    $query->where('pembeli', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhere('no_nota', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhere('status', 'LIKE', '%' . $searchTerm . '%');
+                })
+                ->paginate(15);
+        } elseif ($request->has('date')) {
+            $dateFilter = $request->date;
+            $data = Nota::where('id_toko', Auth::user()->id_toko)
+                ->whereDate('created_at', $dateFilter)
+                ->whereIn('status', ['taked', 'cancel'])->paginate(15);
+        } else {
+            $data = Nota::where('id_toko', Auth::user()->id_toko)
+                ->whereIn('status', ['taked', 'cancel'])->paginate(15);
+        }
 
         return view('admin.kasir.history.index', [
             'data' => $data
@@ -171,7 +214,7 @@ class kasirController extends Controller
 
         // Mengambil data total nota dengan status 'taked' dan 'cancel'
         $data = Nota::select(
-            DB::raw('DATE(created_at) as tanggal'),
+            DB::raw('DATE(updated_at) as tanggal'),
             DB::raw('count(*) as total_nota'),
             DB::raw('sum(CASE WHEN status = "taked" THEN 1 ELSE 0 END) as jumlah_nota_taked'),
             DB::raw('sum(CASE WHEN status = "taked" THEN total_harga ELSE 0 END) as total_harga_taked'),
@@ -192,9 +235,57 @@ class kasirController extends Controller
             $groupedData[$item->tanggal]['jumlah_nota_cancel'] = $item->jumlah_nota_cancel;
             $groupedData[$item->tanggal]['total_harga_cancel'] = $item->total_harga_cancel;
         }
-        // dd($groupedData);
-        return view('admin.kasir.laporan.index', ["data" => $groupedData]);
-    }
 
+        $collection = new Collection($groupedData);
+
+        // Menggunakan paginasi pada objek Collection
+        $perPage = 15;
+        $currentPage = request()->get('page', 1); // Mengambil halaman saat ini dari URL
+        $pagedData = $collection->slice(($currentPage - 1) * $perPage, $perPage)->all();
+
+        $paginatedData = new \Illuminate\Pagination\LengthAwarePaginator(
+            $pagedData,
+            $collection->count(),
+            $perPage,
+            $currentPage,
+            ['path' => url('your-path')]
+        );
+        return view('admin.kasir.laporan.index', ["data" => $paginatedData]);
+    }
+    public function print($no_nota)
+    {
+        $nota = Nota::where('no_nota', $no_nota)->first();
+        $pesanan = Pesanan::where('no_nota', $no_nota)->get();
+        $toko = Toko::where('id', Auth::user()->id_toko)->first();
+        $data = [
+            'nota' => $nota,
+            'pesanan' => $pesanan,
+            'toko' => $toko
+        ];
+        // dd($data);
+        return view('admin.kasir.history.struk', $data);
+    }
+    private function calculateTotalPrice($data)
+    {
+        $totalPrice = 0;
+
+        // Menghitung total harga untuk setiap item
+        for ($i = 1; $i <= 4; $i++) {
+            $menuKey = "menu{$i}";
+            $hargaKey = "harga{$i}";
+            $quantityKey = "quantity{$i}";
+
+            // Pastikan data untuk item tersedia
+            if (isset($data[$menuKey], $data[$hargaKey], $data[$quantityKey])) {
+                $harga = (int) $data[$hargaKey];
+                $quantity = (int) $data[$quantityKey];
+
+                // Menambahkan hasil perkalian harga dan quantity ke total
+                $totalPrice += $harga * $quantity;
+            }
+        }
+
+        return $totalPrice;
+    }
 
 }

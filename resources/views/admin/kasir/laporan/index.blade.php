@@ -65,13 +65,55 @@
                 </tbody>
             </table>
         </div>
+        <div class="w-full flex flex-row justify-center items-center py-5 ">
+            <nav aria-label="Page navigation example">
+                <ul class="list-style-none flex">
+                    <!-- Tombol Previous -->
+                    @if ($data->onFirstPage())
+                        <li>
+                            <a
+                                class="pointer-events-none relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400">Previous</a>
+                        </li>
+                    @else
+                        <li>
+                            <a href="{{ $data->previousPageUrl() }}"
+                                class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-200 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">Previous</a>
+                        </li>
+                    @endif
+
+                    <!-- Tampilkan halaman-halaman -->
+                    {{-- @dd($data->totalPage()) --}}
+                    @for ($page = max(1, $data->currentPage() - 2); $page <= min($data->lastPage(), $data->currentPage() + 2); $page++)
+                        <li aria-current="{{ $page == $data->currentPage() ? 'page' : '' }}">
+                            <a href="{{ $data->url($page) }}"
+                                class="relative block rounded  px-3 py-1.5 text-sm font-medium text-neutral-600 transition-all duration-300 hover:bg-neutral-200 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white {{ $page == $data->currentPage() ? 'bg-neutral-400 pointer-events-none' : '' }}">
+                                {{ $page }}
+                            </a>
+                        </li>
+                    @endfor
+
+                    <!-- Tombol Next -->
+                    @if ($data->hasMorePages())
+                        <li>
+                            <a href="{{ $data->nextPageUrl() }}"
+                                class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-200 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">Next</a>
+                        </li>
+                    @else
+                        <li>
+                            <a
+                                class="pointer-events-none relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400">Next</a>
+                        </li>
+                    @endif
+                </ul>
+            </nav>
+        </div>
     </div>
     <script>
         var ctx = document.getElementById('myChart').getContext('2d');
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: @json(array_keys($data)),
+                labels: @json(array_keys($data->all())),
                 datasets: [{
                         label: 'Taked',
                         data: @json($total_nota_taked),

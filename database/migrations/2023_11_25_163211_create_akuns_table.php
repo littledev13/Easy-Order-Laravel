@@ -8,26 +8,26 @@ return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::create('akuns', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama', 50)->nullable();
-            $table->string('username', 25)->unique();
-            $table->string('password', 18)->nullable();
-            $table->string('no_hp', 13)->nullable();
-            $table->string('level', 15)->nullable();
-            $table->string('id_toko')->nullable();
-            $table->rememberToken();
-            $table->timestamps();
-        });
-    }
+    // public function up(): void
+    // {
+    //     Schema::create('akuns', function (Blueprint $table) {
+    //         $table->id();
+    //         $table->string('nama', 50)->nullable();
+    //         $table->string('username', 25)->unique();
+    //         $table->string('password', 18)->nullable();
+    //         $table->string('no_hp', 13)->nullable();
+    //         $table->string('level', 15)->nullable();
+    //         $table->string('id_toko')->nullable();
+    //         $table->rememberToken();
+    //         $table->timestamps();
+    //     });
+    // }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('akuns');
-    }
+    // /**
+    //  * Reverse the migrations.
+    //  */
+    // public function down(): void
+    // {
+    //     Schema::dropIfExists('akuns');
+    // }
 };

@@ -1,7 +1,7 @@
 @extends('admin.manager.layout')
 
 @section('title', 'Manage menu')
-
+@section('id', $level->id)
 @section('content')
     <p class="text-center font-semibold text-2xl text-neutral-900 mt-10 mb-5">Edit menu</p>
     @if ($errors->any())
@@ -15,7 +15,6 @@
                 </svg>
             </span>
             <ul>
-
                 @foreach ($errors->all() as $item)
                     <li>{{ $item }}</li>
                 @endforeach
@@ -40,11 +39,10 @@
             <div class="relative mb-3">
                 <select required name="kategori"
                     class="appearance-none w-full py-2 px-4 border border-gray-300 rounded-md leading-tight focus:outline-none focus:border-blue-500">
-                    <option value="" selected disabled hidden>Pilih Kategori
-                    </option>
-                    <option value="Makanan">Makanan</option>
-                    <option value="Minuman">Minuman</option>
-                    <option value="Dessert">Dessert</option>
+                    <option value="" selected disabled hidden>Pilih Kategori</option>
+                    @foreach ($kategori as $item)
+                        <option value="{{ $item->nama }}">{{ $item->nama }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="relative mb-3" data-te-input-wrapper-init>
@@ -56,6 +54,15 @@
                     class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.15rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">Deskripsi<span
                         class="text-red-600">*</span>
                 </label>
+            </div>
+            <div class="relative mb-3">
+                <select required name="stock"
+                    class="appearance-none w-full py-2 px-4 border border-gray-300 rounded-md leading-tight focus:outline-none focus:border-blue-500">
+                    <option value="" selected disabled hidden>Stock
+                    </option>
+                    <option value="Tersedia">Tersedia</option>
+                    <option value="Habis">Habis</option>
+                </select>
             </div>
             <div class="relative mb-3" data-te-input-wrapper-init>
                 <input type="text"
@@ -78,7 +85,7 @@
 
             <div
                 class="flex flex-shrink-0 flex-wrap items-center justify-center gap-8 rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
-                <a href="/admin/menu"
+                <a href="{{ route('manager.menu') }}"
                     class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
                     data-te-modal-dismiss data-te-ripple-init data-te-ripple-color="light">
                     Back

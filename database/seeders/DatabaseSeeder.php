@@ -16,44 +16,44 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        DB::table('kategoris')->insert([
-            [
-                'nama' => 'makanan',
-                'created_at' => now()
-            ],
-            [
-                'nama' => 'minuman',
-                'created_at' => now()
-            ],
-            [
-                'name' => 'desert',
-                'created_at' => now()
-            ]
-        ]);
-        DB::table('levels')->insert(
-            [
-                [
-                    'nama' => 'administrator',
-                    'created_at' => now()
-                ],
-                [
-                    'nama' => 'manager',
-                    'created_at' => now()
-                ],
-                [
-                    'nama' => 'kasir',
-                    'created_at' => now()
-                ],
-                [
-                    'nama' => 'koki',
-                    'created_at' => now()
-                ]
-            ]
-        );
+        // DB::table('kategoris')->insert([
+        //     [
+        //         'nama' => 'makanan',
+        //         'created_at' => now()
+        //     ],
+        //     [
+        //         'nama' => 'minuman',
+        //         'created_at' => now()
+        //     ],
+        //     [
+        //         'name' => 'desert',
+        //         'created_at' => now()
+        //     ]
+        // ]);
+        // DB::table('levels')->insert(
+        //     [
+        //         [
+        //             'nama' => 'administrator',
+        //             'created_at' => now()
+        //         ],
+        //         [
+        //             'nama' => 'manager',
+        //             'created_at' => now()
+        //         ],
+        //         [
+        //             'nama' => 'kasir',
+        //             'created_at' => now()
+        //         ],
+        //         [
+        //             'nama' => 'koki',
+        //             'created_at' => now()
+        //         ]
+        //     ]
+        // );
         DB::table('users')->insert([
             'nama' => 'administrator',
             'username' => 'administrator',
-            'level' => 'administrator',
+            'level' => 'admin',
             'password' => Hash::make('admin981'),
             'no_hp' => '082374095590',
             'id_toko' => '1',

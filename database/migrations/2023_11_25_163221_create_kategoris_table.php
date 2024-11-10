@@ -12,7 +12,9 @@ return new class extends Migration {
     {
         Schema::create('kategoris', function (Blueprint $table) {
             $table->id();
-            $table->string('nama', 18);
+            $table->string('nama', 18)->unique();
+            $table->string('image_url')->default("");
+            $table->string('id_toko');
             $table->timestamps();
         });
     }

@@ -13,4 +13,14 @@ class Kategori extends Model
     // {
     //     return $this->hasMany(Menu::class, 'kategori', 'nama');
     // }
+    protected $fillable = [
+        'image_url',
+        'nama',
+        'id_toko',
+    ];
+    public function menu()
+    {
+        return $this->hasMany(Nota::class);
+    }
+
 }

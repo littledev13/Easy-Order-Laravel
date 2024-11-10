@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Menu;
 use App\Models\Nota;
+use App\Models\Toko;
 use Illuminate\Support\Facades\DB;
 use App\Models\Pesanan;
 use Illuminate\Http\Request;
@@ -11,77 +13,82 @@ use Carbon\Carbon;
 use App\Events\NewOrderNotification;
 
 
-class CartController extends Controller {
+class CartController extends Controller
+{
     //
-    public function indexCart() {
+    public function indexCart()
+    {
         $data = Session::get('cart');
         $totalHarga = 0;
 
-        if($data) {
-            foreach($data as $item) {
+        if ($data) {
+            foreach ($data as $item) {
                 $totalHarga += $item['quantity'] * $item['harga'];
             }
         }
-
+        $cart = Session::get('cart');
+        $quantity = 0;
+        if ($cart !== null) {
+            foreach ($cart as $item) {
+                $quantity += intval($item['quantity']);
+            }
+        }
         return view('{id}.cart.index', [
             'data' => $data ?? [], // Jika $data null, berikan nilai array kosong
-            'total_harga' => $totalHarga
+            'total_harga' => $totalHarga,
+            'quantity' => $quantity
+
         ]);
     }
-    public function updateCart(Request $request) {
+    public function updateCart(Request $request)
+    {
+        // $data = [];
+        // array_push($data, $request->except(['_token', '_method', 'action']));
         // Mendapatkan data cart dari session
         $action = $request->input('action');
         $cart = Session::get('cart', []);
-
+        // dd($cart);
         // Menambahkan item baru ke dalam cart
         $foundItemIndex = array_search($request->nama, array_column($cart, 'nama'));
 
         // Mendapatkan data yang diperbarui
-        if($action == 'add') {
+        if ($action == 'add') {
             // Logic for adding to the cart
-            if($foundItemIndex !== false) {
-                $cart[$foundItemIndex]['quantity'] += 1;
+            if ($foundItemIndex !== false) {
+                // dd('tambah');
+                $cart[$foundItemIndex]['quantity'] += $request->quantity;
                 // Item ditemukan, lanjutkan dengan menambah atau mengurangi quantity
             } else {
+                // dd('baru');
                 // Item tidak ditemukan
-                $newItem = $request->all();
+                $newItem = $request->except(['_token', '_method', 'action']);
                 $cart[] = $newItem;
             }
-        } elseif($action == 'minus') {
-            // Logic for subtracting from the cart
-            if($foundItemIndex !== false) {
-                // Item ditemukan, lanjutkan dengan menambah atau mengurangi quantity
-                if($cart[$foundItemIndex]['quantity'] > 1) {
-                    $cart[$foundItemIndex]['quantity'] -= 1;
-                }
-                if($cart[$foundItemIndex]['quantity'] <= 1) {
-                    unset($cart[$foundItemIndex]);
-                }
-            }
         }
-
         $totalHarga = 0;
 
-        foreach($cart as $item) {
+        foreach ($cart as $item) {
             $totalHarga += $item['quantity'] * $item['harga'];
         }
 
         // Simpan kembali cart yang diperbarui ke dalam session
         Session::put('cart', $cart);
-
-        return view('{id}.cart.index', [
-            'data' => $cart,
-            'total_harga' => $totalHarga
-        ]);
+        // dd(Session::get('cart', []));
+        return redirect()->route('pesan', $request->id_toko);
     }
-    function pesan(Request $request, $id_toko) {
+    function pesan(Request $request, $id_toko)
+    {
+        // dd($request->all());
         $namaPemesan = $request->input('nama');
+        $noMeja = $request->input('nomor_meja');
         $totalHarga = $request->input('total_harga');
 
         // Inisialisasi status pesanan
         $pesananResult = [
             'status' => false,
             'data' => null,
+            'no_meja' => '',
+            'toko' => Toko::where('id', $id_toko)->first(),
             'pesanan' => [], // Menambah array untuk menyimpan informasi pesanan
         ];
 
@@ -97,7 +104,9 @@ class CartController extends Controller {
                 'pembeli' => $namaPemesan,
                 'total_harga' => $totalHarga,
                 'no_nota' => $noNota,
+                'no_meja' => $noMeja,
                 'pembayaran' => 'unpaid',
+                'kembalian' => 'unpaid',
                 'status' => 'unpaid',
                 'id_toko' => $id_toko,
             ];
@@ -108,8 +117,7 @@ class CartController extends Controller {
             // Mendapatkan data item pesanan dari form
             $items = [];
             $index = 1;
-
-            while($request->has("nama_menu{$index}")) {
+            while ($request->has("nama_menu{$index}")) {
                 $itemData = [
                     'menu' => $request->input("nama_menu{$index}"),
                     'quantity' => $request->input("quantity{$index}"),
@@ -139,10 +147,12 @@ class CartController extends Controller {
             // Set status pesanan berhasil
             $pesananResult['status'] = true;
             $pesananResult['data'] = $nota;
+            $pesananResult['no_meja'] = $noMeja;
 
         } catch (\Exception $e) {
             // Rollback transaksi jika terjadi kesalahan
             DB::rollBack();
+            dd($e->getMessage());
             // Handle kesalahan sesuai kebutuhan Anda
         }
 
@@ -151,8 +161,26 @@ class CartController extends Controller {
         Session::remove('cart');
         return view('{id}.cart.pesanan', $pesananResult);
     }
+    function delete($id, $nama)
+    {
+        $id = request()->segment(1);
+        $cart = Session::get('cart', []);
 
-    private function generateNotaNumber($e) {
+        // $foundItemIndex = array_search($nama, array_column($cart, 'nama'));
+
+        $cartItemsBaru = array_filter($cart, function ($item) use ($nama) {
+            return $item['nama'] !== $nama;
+        });
+        // dd($cartItemsBaru);
+
+        Session::put('cart', $cartItemsBaru);
+        // dd(Session::get('cart', []));
+
+        return redirect()->route('indexCart', $id);
+    }
+
+    private function generateNotaNumber($e)
+    {
         // Mendapatkan tanggal hari ini dengan format ddmmyy
         $tanggal = Carbon::now()->format('dmy');
 
@@ -160,8 +188,10 @@ class CartController extends Controller {
         $jam = Carbon::now()->format('His');
 
         // Menggabungkan komponen-komponen tersebut untuk membentuk nomor nota
-        $nomorNota = 'NOT'.$e.$tanggal.$jam;
+        $nomorNota = 'NOT' . $e . $tanggal . $jam;
 
         return $nomorNota;
     }
+
+
 }

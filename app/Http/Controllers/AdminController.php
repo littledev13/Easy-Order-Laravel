@@ -7,8 +7,11 @@ use App\Models\Nota;
 use App\Models\Pesanan;
 use App\Models\Toko;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Collection;
 
 class AdminController extends Controller
 {
@@ -18,10 +21,23 @@ class AdminController extends Controller
         $user = Auth::user()->level;
         return view('admin.administrator.index');
     }
-    public function showToko()
+    public function showToko(Request $request)
     {
         // $tokos = Toko::all();
-        $tokos = Toko::where('id', '>', 1)->get();
+        if ($request->has('search')) {
+            $searchTerm = $request->search;
+            $tokos = Toko::where('id', '>', 1)
+                ->where(function ($query) use ($searchTerm) {
+                    $query->where('nama', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhere('alamat', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhere('deskripsi', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhere('pemilik', 'LIKE', '%' . $searchTerm . '%');
+                })
+                ->paginate(15);
+        } else {
+            $tokos = Toko::where('id', '>', 1)->paginate(15);
+        }
+
         return view('admin.administrator.toko.index', [
             'tokos' => $tokos
         ]);
@@ -30,17 +46,37 @@ class AdminController extends Controller
     public function createToko(Request $request)
     {
         $request->validate([
-            'nama' => 'required|string|max:25',
+            'nama' => [
+                'required',
+                'string',
+                'max:25',
+                Rule::unique('tokos', 'nama')->ignore($request->id),
+            ],
             'pemilik' => 'required|string|max:25',
             'deskripsi' => 'required|string|max:150',
             'alamat' => 'required|string|max:150',
+        ], [
+            // Pesan error sesuai dengan aturan validasi
+            'nama.required' => 'Gagal menginput nama. Harap gunakan nama lain!',
+            'pemilik.required' => 'Gagal menginput pemilik.',
+            'deskripsi.required' => 'Gagal menginput deskripsi.',
+            'alamat.required' => 'Gagal menginput alamat.',
+            'nama.unique' => 'Nama toko sudah terdaftar. Harap gunakan nama lain!',
         ]);
-        $toko = Toko::create([
+
+        // if ($validator->fails()) {
+        //     // Jika validasi gagal, redirect kembali ke halaman sebelumnya dengan pesan error
+        //     return redirect()->back()->withErrors($validator)->withInput();
+        // }
+        // dd($request);
+        // Jika validasi sukses, simpan data toko dan arahkan ke halaman yang diinginkan
+        Toko::create([
             'nama' => $request->input('nama'),
             'pemilik' => $request->input('pemilik'),
             'deskripsi' => $request->input('deskripsi'),
             'alamat' => $request->input('alamat'),
         ]);
+
         return redirect()->route('toko')->with('berhasil', 'Data toko berhasil disimpan.');
     }
     // ! Delete
@@ -76,9 +112,25 @@ class AdminController extends Controller
 
         return redirect()->route('toko')->with('success', 'Data toko berhasil diupdate.');
     }
-    function pesanan()
+    function pesanan(Request $request)
     {
-        $nota = Nota::whereNotIn('status', ['taked', 'cancel'])->get();
+        // $nota = Nota::whereNotIn('status', ['taked', 'cancel'])->paginate(15);
+        // $today = Carbon::now()->format('Y-m-d');
+        if ($request->has('search')) {
+            $searchTerm = $request->search;
+            $nota = Nota::whereNotIn('status', ['taked', 'cancel'])
+                ->where(function ($query) use ($searchTerm) {
+                    $query->where('pembeli', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhere('no_nota', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhere('status', 'LIKE', '%' . $searchTerm . '%');
+                })
+                ->paginate(15);
+        } elseif ($request->has('date')) {
+            $dateFilter = $request->date;
+            $nota = Nota::whereDate('created_at', $dateFilter)->whereNotIn('status', ['taked', 'cancel'])->paginate(15);
+        } else {
+            $nota = Nota::whereNotIn('status', ['taked', 'cancel'])->paginate(15);
+        }
         return view('admin.administrator.pesanan.index', ['nota' => $nota]);
     }
     function detailsPesanan($no_nota)
@@ -129,12 +181,12 @@ class AdminController extends Controller
             return redirect()->route('pesanan')->with('gagal', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
-    function taked($no_nota)
+    function taked(Request $request, $no_nota)
     {
         $nota = Nota::where('no_nota', $no_nota)->first();
         if ($nota) {
             $nota->update([
-                'status' => 'taked'
+                'status' => $request->status
             ]);
             return redirect()->route('pesanan')->with('berhasil', 'Pesanan Telah diambil');
         }
@@ -145,8 +197,12 @@ class AdminController extends Controller
         // dd($request->input("quantity1"));
         DB::beginTransaction();
         $index = 1;
-        $totalHarga = 0;
-
+        $totalHarga = $this->calculateTotalPrice($request->all());
+        if ($totalHarga > $request->pembayaran) {
+            return redirect()->route('admin.details', $no_nota)->withErrors(['gagal' => 'Uang Pembayaran kurang']);
+        }
+        // dd($totalHarga);
+        // dd($request->all());
         try {
             // Ambil data nota dengan nomor nota tertentu
             $nota = Nota::where('no_nota', $no_nota)->first();
@@ -163,23 +219,18 @@ class AdminController extends Controller
                         dd('hapus');
                         Pesanan::where('menu', $request->input("menu{$index}"))->delete();
                     }
-                    $totalHarga += (($request->input("quantity{$index}")) * ($request->input("harga{$index}")));
                     $index++;
                 }
                 Nota::where('no_nota', $no_nota)->update([
+                    'kembalian' => floatval($request->pembayaran) - $totalHarga,
                     'total_harga' => $totalHarga,
-                    'pembayaran' => 'paid',
+                    'pembayaran' => floatval($request->pembayaran),
                     'status' => 'dimasak'
                 ]);
 
                 // Commit transaksi jika berhasil
                 DB::commit();
-                // $notif = [
-                //     Nota::where('no_nota', $no_nota)->get(),
-                //     Pesanan::where('no_nota', $no_nota)->get(),
-                // ];
-                // event(new NewCookNotification(Nota::where('no_nota', $no_nota)->get(), ));
-                return redirect()->route('kasir.pesanan')->with(
+                return redirect()->route('pesanan')->with(
                     'berhasil',
                     'Nota Pesanan berhasil diupdate'
                 );
@@ -187,22 +238,22 @@ class AdminController extends Controller
                 // Rollback transaksi jika nota tidak ditemukan
                 DB::rollback();
 
-                return redirect()->route('kasir.pesanan')->with('gagal', 'Nota Pesanan gagal diupdate');
+                return redirect()->route('pesanan')->with('gagal', 'Nota Pesanan gagal diupdate');
             }
         } catch (\Exception $e) {
             // Rollback transaksi jika terjadi kesalahan lainnya
             DB::rollback();
 
-            return redirect()->route('kasir.pesanan')->with('gagal', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->route('pesanan')->with('gagal', 'Terjadi kesalahan: ' . $e->getMessage());
         }
+
+
+
     }
     function laporan()
     {
         // $nota = Nota::all();
         $toko = Toko::where('id', '>', '1')->get();
-        // $nota = Nota::where('status', 'taked')->get();
-        // $pesanan = Pesanan::all();
-        // $tokoData = Toko::with(['notas', 'pesanans.menu'])->where('id', '>=', 2)->get();
         $data = [];
         foreach ($toko as $key => $value) {
             $nota = Nota::where('id_toko', $value->id)->whereIn('status', ['taked']);
@@ -228,10 +279,45 @@ class AdminController extends Controller
             "menu" => Menu::all()->count(),
             "total_harga" => Nota::where('status', 'taked')->sum('total_harga'),
         ];
+        $collection = new Collection($data);
 
+        // Menggunakan paginasi pada objek Collection
+        $perPage = 15;
+        $currentPage = request()->get('page', 1); // Mengambil halaman saat ini dari URL
+        $pagedData = $collection->slice(($currentPage - 1) * $perPage, $perPage)->all();
+
+        $paginatedData = new \Illuminate\Pagination\LengthAwarePaginator(
+            $pagedData,
+            $collection->count(),
+            $perPage,
+            $currentPage,
+            ['path' => url('your-path')]
+        );
         return view('admin.administrator.laporan.index', [
-            "data" => $data,
+            "data" => $paginatedData,
             'summary' => $summary
         ]);
+    }
+    private function calculateTotalPrice($data)
+    {
+        $totalPrice = 0;
+
+        // Menghitung total harga untuk setiap item
+        for ($i = 1; $i <= 4; $i++) {
+            $menuKey = "menu{$i}";
+            $hargaKey = "harga{$i}";
+            $quantityKey = "quantity{$i}";
+
+            // Pastikan data untuk item tersedia
+            if (isset($data[$menuKey], $data[$hargaKey], $data[$quantityKey])) {
+                $harga = (int) $data[$hargaKey];
+                $quantity = (int) $data[$quantityKey];
+
+                // Menambahkan hasil perkalian harga dan quantity ke total
+                $totalPrice += $harga * $quantity;
+            }
+        }
+
+        return $totalPrice;
     }
 }

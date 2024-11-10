@@ -10,6 +10,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PesanController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,9 +37,12 @@ Route::middleware(['guest'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/logout.php', [LoginController::class, 'logout']);
-
+    Route::get('/home', function () {
+        $user = Auth::user();
+        return redirect($user->level);
+    });
     // Admin Routes
-    Route::middleware(['role:administrator'])->group(function () {
+    Route::middleware(['role:admin'])->group(function () {
         Route::get('/admin', [AdminController::class, 'index']);
         Route::get('/admin/toko', [AdminController::class, 'showToko'])->name('toko');
         Route::post('/admin/toko', [AdminController::class, 'createToko']);
@@ -73,7 +77,6 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/manager/akun/{user}', [ManagerController::class, 'destroy'])->name('manager.akun.destroy');
         Route::get('/manager/akun/{user}', [ManagerController::class, 'edit'])->name('manager.akun.edit');
         Route::put('/manager/akun/{user}', [ManagerController::class, 'update'])->name('manager.akun.update');
-
         Route::get('/manager/menu', [ManagerController::class, 'indexMenu'])->name('manager.menu');
         Route::post('/manager/menu', [ManagerController::class, 'addMenu'])->name('manager.menu.add');
         Route::delete('/manager/menu/{menu}', [ManagerController::class, 'destroyMenu'])->name('manager.menu.destroy');
@@ -90,6 +93,7 @@ Route::middleware(['auth'])->group(function () {
         Route::PUT('/kasir/pesanan/{no_nota}', [kasirController::class, 'updatePesanan'])->name('kasir.update');
         Route::delete('/kasir/pesanan/{no_nota}', [kasirController::class, 'deletePesanan'])->name('kasir.delete');
         Route::get('/kasir/history/', [kasirController::class, 'history'])->name('kasir.history');
+        Route::get('/kasir/history/{no_nota}', [kasirController::class, 'print'])->name('kasir.struk');
         Route::get('/kasir/laporan/', [kasirController::class, 'laporan'])->name('kasir.laporan');
 
 
@@ -103,10 +107,13 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 Route::get('/notif', [kasirController::class, 'notif'])->name('kasir.notif');
+Route::post('/{id_toko}', [CartController::class, 'pesan'])->name('orderPesanan');
 Route::get('/{id_toko}', [PesanController::class, 'index'])->name('pesan');
-Route::post('/{id_toko}/pesanan', [CartController::class, 'pesan'])->name('addPesanan');
+Route::post('/{id_toko}/pesanan', [CartController::class, 'updateCart'])->name('addPesanan');
 Route::get('/{id}/cart', [CartController::class, 'indexCart'])->name('indexCart');
+Route::get('/{id}/delete/{nama}', [CartController::class, 'delete'])->name('deleteItem');
 Route::post('/{id}/cart', [CartController::class, 'updateCart'])->name('updateCart');
 Route::get('/{id_toko}/{kategori}', [PesanController::class, 'showMenu'])->name('menuPesanan');
+Route::get('/{id_toko}/{kategori}/{id}', [PesanController::class, 'details'])->name('details');
 
 // Route::get('/{id}/cart', [CartController::class, 'index'])->name('cart');

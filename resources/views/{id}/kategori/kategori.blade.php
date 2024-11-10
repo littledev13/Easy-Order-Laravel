@@ -1,49 +1,44 @@
 @extends('{id}.layout')
 @php
-    $angka = request()->segment(1);
+    $id = request()->segment(1);
+    $kategori = request()->segment(2);
 @endphp
-
+@section('quantity', $quantity)
 
 @section('content')
     <div
-        class="w-full h-full flex flex-col md:flex-row md:flex-wrap justify-center items-center gap-5 md:justify-normal md:items-start md:pb-32 ">
-        @forelse ($menu as $item)
-            <form action="{{ route('updateCart', $angka) }}" method="post">
-                @csrf
-                @method('POST')
-                <div
-                    class="card max-w-[400px] h-[140px] rounded-lg bg-white flex flex-row items-center box-content overflow-hidden shadow-md shadow-gray-400 pr-2">
-
-                    <div class="hidden">
-                        <input type="text" value="{{ $item->id }}" name="id">
-                        <input type="text" value="{{ $item->nama }}" name="nama">
-                        <input type="text" value="{{ $item->harga }}" name="harga">
-                        <input type="number" value="1" name="quantity">
+        class="w-full h-full flex flex-col md:flex-row md:flex-wrap justify-center items-center  md:justify-normal md:items-start md:pb-32">
+        <p class="w-full text-center text-2xl text-neutral-800 font-semibold capitalize border-b-2 border-neutral-400 mb-5">
+            {{ $kategori }}</p>
+        <a href="{{ route('pesan', $id) }}"
+            class=" px-5 py-2 text-white bg-primary rounded-md hover:bg-primary-600 hover:text-slate-100 hover:shadow-md"
+            data-te-ripple-init data-te-ripple-color="light"><i class="fa-solid fa-arrow-left-long"></i></a>
+        <div class="w-full mt-3 flex flex-row flex-wrap gap-4">
+            @forelse ($menu as $item)
+                <div class="item w-[200px] bg-white rounded transition-transform duration-200 shadow hover:shadow-md hover:-translate-y-2 relative overflow-hidden"
+                    data-te-ripple-init data-te-ripple-color="light">
+                    <a href="{{ route('details', [$id, $kategori, $item->id]) }}"
+                        class=" bg-transparent absolute w-full h-full top-0"></a>
+                    <div class="image w-[200px] h-[200px]">
+                        <img src="{{ asset('img/menu/' . $item->image_url) }}" alt=""
+                            class="w-full h-full object-cover">
                     </div>
-
-                    <div class="img ">
-                        <img src="/img/menu/{{ $item->image_url }}" alt=""
-                            class="h-[140px] object-cover object-center">
-                    </div>
-                    <div class="details h-full  min-w-[250px] px-2">
-                        <p class="text-xl font-semibold text-neutral-900">{{ $item->nama }}</p>
-                        <p class="text-sm text-gray-500">{{ $item->deskripsi }}</p>
-                    </div>
-                    <div class="action flex flex-col items-center gap-5">
-                        <button type="submit" name="action" value="add"
-                            class="btn  w-8 h-8 hover:text-slate-400 rounded-full text-slate-200 flex place-items-center justify-center">
-                            <i class="fa-solid fa-circle-plus text-2xl"></i>
-                        </button>
-                        <button type="submit" name="action" value="minus"
-                            class="btn  w-8 h-8 hover:text-slate-400 rounded-full text-slate-200 flex place-items-center justify-center">
-                            <i class="fa-solid fa-circle-minus text-2xl"></i>
-                        </button>
+                    <div class="p-[4px] flex flex-col justify-between gap-5">
+                        <div class="title">
+                            <p>{{ $item->nama }}</p>
+                        </div>
+                        <div class="w-full flex flex-row justify-between items-center">
+                            <div class="flex flex-row items-center gap-1 text-red-600 font-semibold">
+                                <p class="text-sm">Rp</p>
+                                <p>{{ number_format($item->harga, 0, ',', '.') }}</p>
+                            </div>
+                            <p>{{ $item->stock }}</p>
+                        </div>
                     </div>
                 </div>
-            </form>
-
-        @empty
-            <p class="text-slate-400 text-2xl mt-[37vh] text-center w-full">Menu belum ada</p>
-        @endforelse
+            @empty
+                <p class="text-slate-400 text-2xl mt-[37vh] text-center w-full">Menu belum ada</p>
+            @endforelse
+        </div>
     </div>
 @endsection

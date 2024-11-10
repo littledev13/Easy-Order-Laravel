@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title>Kasir | Easy Order</title>
+    <title>Koki | Easy Order</title>
     @vite('resources/js/tw-elements.umd.min.js')
     @vite('resources/css/app.css')
     @vite('resources/css/all.css')
@@ -13,10 +13,10 @@
 </head>
 
 <body>
-    <div class="container mx-auto">
+    <div class="container mx-auto print:w-fit print:mx-0 print:my-0">
         <!-- Button trigger modal -->
         <button type="button"
-            class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] invisible absolute"
+            class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] invisible absolute print:hidden"
             data-te-toggle="modal" data-te-target="#exampleModal" data-te-ripple-init data-te-ripple-color="light"
             id="notif">
             Launch demo modal
@@ -61,7 +61,7 @@
                     <!--Modal footer-->
                     <div
                         class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
-                        <button type="button"
+                        <button type="button" onclick="location.reload();"
                             class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
                             data-te-modal-dismiss data-te-ripple-init data-te-ripple-color="light">
                             Close
@@ -76,24 +76,20 @@
             </div>
         </div>
         @section('header')
-            <nav class="w-full sticky top-0 left-0 flex flex-row justify-between items-center">
+            <nav class="w-full sticky top-0 left-0 flex flex-row justify-between items-center print:hidden mt-3">
                 <h2 class="text-3xl text-[#101024] px-3">
                     Easy<sub>order</sub>
                 </h2>
 
-                <li>
-                    <a href="/logout.php"
-                        class="w-fit h-fit rounded px-2 py-1 flex flex-row gap-1 items-center hover:cursor-pointer shadow-md bg-red-400 hover:bg-red-500 text-white scale-[.80]">
-                        <i class="fa-solid fa-right-from-bracket"></i>
+                <a href="/logout.php"
+                    class="w-fit h-fit rounded px-2 py-1 flex flex-row gap-1 items-center hover:cursor-pointer shadow-md bg-red-400 hover:bg-red-500 text-white scale-[.80]">
+                    <i class="fa-solid fa-right-from-bracket"></i>
 
-                        <p>Logout</p>
-                    </a>
-                </li>
-                </ul>
-        </div>
-        </nav>
-    @show
-    @yield('content')
+                    <p>Logout</p>
+                </a>
+            </nav>
+        @show
+        @yield('content')
     </div>
     @vite('resources/js/main.js')
     <script type="module">

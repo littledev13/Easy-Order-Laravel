@@ -1,20 +1,51 @@
 @extends('{id}.layout')
 @section('content')
-    <div id="pesanan" class="bg-white rounded-md mx-auto w-[340pt] px-6 py-5 shadow-md">
-        <p class="w-full text-center font-semibold text-neutral-800 mb-3">Rincian Pesanan</p>
-        <div class="w-full text-sm text-slate-400 mb-1"><span class="font-semibold text-black">Nota :
+    {{-- @dd($data); --}}
+    <div id="pesanan"
+        class="bg-white rounded-md mx-auto w-[340pt] px-6 py-5 shadow-md print:block print:w-[350px] print:m-0 print:absolute print:top-1 print:left-1 print:shadow-none">
+        <div class="hidden print:flex flex-col items-center print:w-full">
+            <p>{{ $toko->nama }}</p>
+            <p>{{ $toko->alamat }}</p>
+            <hr class="border-dashed border-slate-400 w-full hidden print:block">
+            <div class="w-full flex flex-col my-1">
+                <div class="flex flex-row">
+                    <p class="w-[100px]">No Nota</p>
+                    <span>: {{ $data->no_nota }}</span>
+                </div>
+                <div class="flex flex-row">
+                    <p class="w-[100px]">Pembeli</p>
+                    <span>: {{ $data->pembeli }}</span>
+                </div>
+                <div class="flex flex-row">
+                    <p class="w-[100px]">No Meja</p>
+                    <span>: {{ $data->no_meja }}</span>
+                </div>
+            </div>
+            <hr class="border-dashed border-slate-400 w-full hidden print:block my-2">
+        </div>
+        <p class="w-full text-center font-semibold text-neutral-800 mb-3 print:hidden">Rincian Pesanan</p>
+        <div class="w-full text-sm text-slate-400 mb-1 print:hidden"><span class="font-semibold text-black">Nota :
             </span>{{ $data->no_nota }}</div>
         @forelse ($pesanan as $item)
+            <div class="hidden print:flex flex-col w-full my-1">
+                <div class="w-full flex flex-row justify-between items-start">
+                    <div>
+                        <p>{{ $item['menu'] }}</p>
+                        <p>{{ $item['quantity'] }}x </p>
+                    </div>
+                    <p>Rp. {{ number_format($item['harga'], 0, ',', '.') }}</p>
+                </div>
+            </div>
+
             <div id="item"
-                class="flex flex-row rounded-md shadow shadow-gray-500 px-3 py-2 justify-between items-center mb-3">
+                class="flex flex-row rounded-md shadow shadow-gray-500 px-3 py-2 justify-between items-center mb-3 print:hidden">
                 <div>
                     <p class="font-semibold text-neutral-600">{{ $item['menu'] }}</p>
                     <p class="text-slate-400 peer block min-h-[auto] w-full rounded border-0 bg-transparent leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                         id="exampleFormControlInput1">{{ $item['quantity'] }}</p>
                 </div>
-                <p class="text-slate-700"><span class="font-bold text-black">@ </span>Rp. {{ $item['harga'] }}
-
-
+                <p class="text-slate-700"><span class="font-bold text-black">@ </span>Rp
+                    {{ number_format($item['harga'], 0, ',', '.') }}
                 </p>
             </div>
         @empty
@@ -22,25 +53,50 @@
         @endforelse
 
 
-
-        <div class="details mt-5">
-            <div class="relative mb-3 flex flex-row justify-between">
+        <hr class="border-dashed border-slate-400 w-full hidden print:block my-2">
+        <div class="details mt-5 print:m-0">
+            <div class="relative mb-3 print:my-0 print:mb-0 flex flex-row justify-between">
                 <div class="flex flex-row justify-between items-center w-20 font-semibold text-neutral-700">
-                    <span>Total</span>
-                    <span>:</span>
-
+                    <div class="flex flex-row">
+                        <span class="w-[100px]">Total</span>
+                        <span>:</span>
+                    </div>
                 </div>
-                <p><span class="font-semibold text-neutral-700">Rp. </span>{{ $data->total_harga }}</p>
-
+                <p><span class="font-semibold text-neutral-700">Rp
+                    </span>{{ number_format($data->total_harga, 0, ',', '.') }}</p>
             </div>
-            <div class="relative mb-3 flex flex-row justify-between">
+            <div class="relative mb-3 hidden print:my-0 print:mb-0 print:flex flex-row justify-between">
                 <div class="flex flex-row justify-between items-center w-20 font-semibold text-neutral-700">
-                    <span>Pembeli</span>
-                    <span>:</span>
-
+                    <div class="flex flex-row">
+                        <span class="w-[100px]">Pembayaran</span>
+                        <span>:</span>
+                    </div>
+                </div>
+                <p><span class="font-semibold text-neutral-700">Rp </span>0</p>
+            </div>
+            <div class="relative mb-3 hidden print:my-0 print:mb-0 print:flex flex-row justify-between">
+                <div class="flex flex-row justify-between items-center w-20 font-semibold text-neutral-700">
+                    <div class="flex flex-row">
+                        <span class="w-[100px]">Kembalian</span>
+                        <span>:</span>
+                    </div>
+                </div>
+                <p><span class="font-semibold text-neutral-700">Rp </span>0</p>
+            </div>
+            <div class="relative mb-3 flex flex-row justify-between print:hidden">
+                <div class="flex flex-row justify-between items-center w-20 font-semibold text-neutral-700">
+                    <div class="flex flex-row">
+                        <span class="w-[100px]">Pembeli</span>
+                        <span>:</span>
+                    </div>
                 </div>
                 <p>{{ $data->pembeli }}</p>
+            </div>
+            <hr class="border-dashed border-slate-400 w-full hidden print:block my-2">
 
+            <div class="print:flex flex-col items-center hidden text-lg mt-3">
+                <p>Terima Kasih</p>
+                <p>Selamat Menikmati</p>
             </div>
             <div class="w-full flex flex-row justify-center items-center">
                 <button id="printButton" data-te-ripple-init data-te-ripple-color="light"
